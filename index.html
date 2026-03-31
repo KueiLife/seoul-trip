@@ -10,280 +10,93 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* 設計更新：『日系極簡風』與『奶油色配色』
+        /* 1. 整體設計：日系極簡風 
+           2. 配色：奶油色 (#FFFDF5) 搭配溫潤的灰褐與深藍
         */
         body { 
-            background-color: #F8F4EA; /* 底色奶油色延伸 */
+            background-color: #FFFDF5; 
             font-family: 'Noto Sans TC', sans-serif; 
+            color: #4A4640;
         }
 
         .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .glass-nav { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); }
         
-        /* 圓弧銜接設計：
-           在頁首區塊底部加入了圓弧半徑 (border-radius: 40px 40px 0 0)，
-           並利用負邊距 (margin-top: -40px) 將下方的主內容區域向上拉動重疊，
-           創造出圓潤、無縫接軌的視覺效果。
-        */
+        /* 頁首圓弧設計：極簡柔和的線條 */
         .header-curve { 
-            border-radius: 40px 40px 0 0; 
-            margin-top: -40px; 
+            border-radius: 30px 30px 0 0; 
+            margin-top: -30px; 
             position: relative; 
             z-index: 10; 
-            background: #FFFFFF; /* 主內容區塊保持乾淨白底 */
+            background-color: #FFFDF5; 
         }
 
-        .date-card.active { background-color: #3b82f6; color: white; transform: scale(1.05); }
-        .item-card { transition: transform 0.2s; }
-        .item-card:active { transform: scale(0.98); }
-        .snow-gradient { background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); }
-        .card-shadow { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
+        /* 日系選取狀態：低飽和度的藍 */
+        .date-card.active { 
+            background-color: #A5B9C7; 
+            color: white; 
+        }
+
+        .item-card { 
+            transition: all 0.3s ease; 
+            background-color: #FFFFFF;
+            border: 1px solid #F0ECE3;
+        }
+        
+        /* 極簡陰影 */
+        .minimal-shadow { box-shadow: 0 4px 12px rgba(180, 170, 150, 0.1); }
+
+        /* 奶油色漸層天氣框 */
+        .cream-gradient { 
+            background: linear-gradient(135deg, #FFF9E5 0%, #F8F4E1 100%); 
+            border: 1px solid #E9E4D4;
+        }
     </style>
 </head>
 <body>
-    <div id="app" class="max-w-md mx-auto min-h-screen shadow-2xl relative pb-20">
+    <div id="app" class="max-w-md mx-auto min-h-screen relative pb-24">
         
         <div class="h-[250px] w-full relative overflow-hidden">
             <img src="https://googleusercontent.com/image_generation_content/1" alt="Olaf Banner" class="w-full h-full object-cover">
             
-            <div class="absolute bottom-12 right-4 flex space-x-2 z-20">
+            <div class="absolute bottom-10 right-4 flex space-x-2 z-20">
                 <button v-for="tab in tabs" :key="tab.id" @click="currentTab = tab.id" 
-                    class="p-3 rounded-full shadow-lg transition-all"
-                    :class="currentTab === tab.id ? 'bg-blue-600 text-white' : 'bg-white/90 text-blue-600'">
+                    class="p-2.5 rounded-full shadow-md transition-all border border-white/50"
+                    :class="currentTab === tab.id ? 'bg-[#A5B9C7] text-white' : 'bg-white/80 text-[#8E8A82]'">
                     <i :data-lucide="tab.icon" class="w-5 h-5"></i>
                 </button>
             </div>
         </div>
 
-        <div class="header-curve px-4 pt-8 pb-10 min-h-screen">
+        <div class="header-curve px-5 pt-8 pb-10 min-h-[calc(100vh-220px)]">
             
             <div v-if="currentTab === 'itinerary'">
                 
-                <div class="snow-gradient rounded-2xl p-4 mb-6 flex items-center justify-between border border-blue-100 card-shadow">
+                <div class="cream-gradient rounded-2xl p-4 mb-8 flex items-center justify-between minimal-shadow">
                     <div class="flex items-center">
-                        <i data-lucide="cloud-snow" class="text-blue-500 mr-3"></i>
+                        <i data-lucide="cloud-sun" class="text-[#D4A373] mr-3"></i>
                         <div>
-                            <p class="text-xs text-blue-600 font-medium">首爾, 南韓</p>
-                            <p class="text-xl font-bold text-blue-900">1°C <span class="text-sm font-normal opacity-70">/ 體感 -2°C</span></p>
+                            <p class="text-[10px] text-[#A69F88] font-bold tracking-wider uppercase">Seoul, Korea</p>
+                            <p class="text-lg font-bold text-[#5C584F]">1°C <span class="text-xs font-normal text-[#A69F88]">/ Feels like -2°C</span></p>
                         </div>
                     </div>
-                    <i data-lucide="refresh-cw" class="w-4 h-4 text-blue-400"></i>
+                    <i data-lucide="refresh-cw" class="w-4 h-4 text-[#C9C4B5]"></i>
                 </div>
 
-                <div class="flex overflow-x-auto space-x-3 hide-scrollbar mb-8 py-2">
+                <div class="flex overflow-x-auto space-x-3 hide-scrollbar mb-8 py-1">
                     <div v-for="date in travelDates" :key="date.full" @click="selectedDate = date.full"
-                        class="date-card min-w-[65px] h-[85px] flex flex-col items-center justify-center rounded-2xl shadow-sm cursor-pointer transition-all bg-white"
-                        :class="{'active': selectedDate === date.full}">
-                        <span class="text-xs font-bold uppercase">{{ date.week }}</span>
-                        <span class="text-2xl font-black mt-1">{{ date.day }}</span>
+                        class="date-card min-w-[60px] h-[80px] flex flex-col items-center justify-center rounded-xl cursor-pointer transition-all border border-[#F0ECE3] bg-white"
+                        :class="{'active minimal-shadow': selectedDate === date.full}">
+                        <span class="text-[10px] font-bold opacity-60 uppercase">{{ date.week }}</span>
+                        <span class="text-xl font-bold mt-0.5">{{ date.day }}</span>
                     </div>
                 </div>
 
                 <div id="sortable-list" class="space-y-6">
-                    <div v-for="(plan, index) in filteredPlans" :key="plan.id" class="relative group">
+                    <div v-for="(plan, index) in filteredPlans" :key="plan.id" class="relative">
                         
-                        <div v-if="plan.type === '航班'" class="bg-blue-600 text-white rounded-3xl p-6 card-shadow relative overflow-hidden">
-                            <div class="flex justify-between items-center mb-4 relative z-10">
-                                <span class="bg-white/20 px-3 py-1 rounded-full text-xs font-bold">{{ plan.flightNo }}</span>
-                                <i data-lucide="plane" class="w-5 h-5 rotate-90"></i>
+                        <div v-if="plan.type === '航班'" class="bg-[#5C6B73] text-white rounded-2xl p-5 minimal-shadow relative overflow-hidden">
+                            <div class="flex justify-between items-center mb-4 opacity-90">
+                                <span class="text-xs font-bold tracking-widest">{{ plan.flightNo }}</span>
+                                <i data-lucide="plane" class="w-4 h-4"></i>
                             </div>
-                            <div class="flex justify-between items-end relative z-10">
-                                <div>
-                                    <p class="text-3xl font-black leading-none">{{ plan.depTime }}</p>
-                                    <p class="text-sm opacity-80 mt-1">{{ plan.depAirport }}</p>
-                                }
-                                <div class="flex-1 border-b border-dashed border-white/30 mx-4 mb-3"></div>
-                                <div class="text-right">
-                                    <p class="text-3xl font-black leading-none">{{ plan.arrTime }}</p>
-                                    <p class="text-sm opacity-80 mt-1">{{ plan.arrAirport }}</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div v-else @click="goNav(plan.name)" class="item-card bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-start space-x-4">
-                            <div class="bg-blue-50 p-3 rounded-xl">
-                                <i :data-lucide="getTypeIcon(plan.type)" class="text-blue-500 w-6 h-6"></i>
-                            </div>
-                            <div class="flex-1">
-                                <div class="flex justify-between">
-                                    <h4 class="font-bold text-gray-800 text-lg">{{ plan.name }}</h4>
-                                    <span class="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded-md">{{ plan.type }}</span>
-                                </div>
-                                <p class="text-sm text-gray-400 mt-1" v-if="plan.openTime">🕒 {{ plan.openTime }}</p>
-                                <p class="text-sm text-blue-600 mt-2 font-medium">{{ plan.note }}</p>
-                            </div>
-                        </div>
-
-                        <div v-if="index < filteredPlans.length - 1" class="ml-10 my-4 flex items-center space-x-3 text-gray-400 border-l-2 border-dashed border-blue-100 pl-6 h-10">
-                            <i data-lucide="car" class="w-4 h-4"></i>
-                            <span class="text-xs font-medium">預計車程 25 分鐘</span>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="fixed bottom-24 right-6 bg-blue-600 text-white p-4 rounded-full shadow-2xl z-50">
-                    <i data-lucide="plus" class="w-6 h-6"></i>
-                </button>
-            </div>
-
-            <div v-if="currentTab === 'info'" class="space-y-6">
-                <h2 class="text-2xl font-black text-blue-900 mb-6">旅遊資訊</h2>
-                
-                <div class="bg-white p-6 rounded-3xl card-shadow border border-gray-100">
-                    <div class="flex items-center mb-4">
-                        <i data-lucide="arrow-left-right" class="text-blue-500 mr-2"></i>
-                        <span class="font-bold text-gray-800">匯率換算 (KRW ➔ TWD)</span>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <input v-model="krw" type="number" class="w-full bg-blue-50 p-4 rounded-2xl font-bold text-blue-900 outline-none" placeholder="輸入韓元">
-                        <i data-lucide="arrow-right" class="text-gray-300"></i>
-                        <div class="w-full bg-gray-50 p-4 rounded-2xl font-bold text-gray-600">
-                           NT$ {{ (krw * 0.024).toFixed(0) }}
-                        </div>
-                    </div>
-                </div>
-
-                <div @click="goNav('RM House Seoul')" class="bg-blue-50 p-6 rounded-3xl border border-blue-100 flex items-start space-x-4">
-                    <div class="bg-white p-3 rounded-xl shadow-sm"><i data-lucide="home" class="text-blue-500 w-6 h-6"></i></div>
-                    <div class="flex-1">
-                        <p class="text-xs font-bold text-blue-400 uppercase tracking-widest mb-1">Accommodation</p>
-                        <h3 class="text-xl font-black text-blue-900">RM House</h3>
-                        <p class="text-sm text-blue-600/70 mt-2 leading-relaxed">와우산로 167, 首爾, 首爾 04056, 南韓</p>
-                        <div class="mt-4 flex space-x-2">
-                            <span class="bg-white px-3 py-1 rounded-full text-xs text-blue-600 font-bold shadow-sm">📞 聯絡房東</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-white p-4 rounded-2xl border border-gray-100 flex items-center space-x-3">
-                        <i data-lucide="car" class="text-blue-500 w-5 h-5"></i>
-                        <span class="text-sm font-bold text-gray-800">租車資訊</span>
-                    </div>
-                    <div class="bg-white p-4 rounded-2xl border border-gray-100 flex items-center space-x-3">
-                        <i data-lucide="phone" class="text-blue-500 w-5 h-5"></i>
-                        <span class="text-sm font-bold text-gray-800">緊急醫療</span>
-                    </div>
-                </div>
-            </div>
-
-            <div v-if="currentTab === 'shopping'" class="grid grid-cols-2 gap-4">
-                <div v-for="i in 4" :key="i" class="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100">
-                    <div class="h-32 bg-blue-100 flex items-center justify-center">
-                        <i data-lucide="image" class="text-blue-200"></i>
-                    </div>
-                    <div class="p-4">
-                        <p class="font-bold text-gray-800">首爾必買零食</p>
-                        <p class="text-xs text-blue-500 mt-1">樂天超市限定</p>
-                    </div>
-                </div>
-                <button class="fixed bottom-24 right-6 bg-blue-600 text-white p-4 rounded-full shadow-2xl z-50">
-                    <i data-lucide="plus" class="w-6 h-6"></i>
-                </button>
-            </div>
-
-            <div v-if="currentTab === 'expenses'">
-                <div class="bg-blue-900 text-white p-8 rounded-3xl shadow-xl mb-6 text-center">
-                    <p class="text-xs opacity-60 uppercase font-bold tracking-widest">Total Spent (TWD)</p>
-                    <h2 class="text-4xl font-black mt-2">NT$ 12,450</h2>
-                </div>
-                <div class="space-y-3">
-                    <div v-for="i in 3" :key="i" class="flex justify-between items-center bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-                        <div class="flex items-center">
-                            <div class="bg-orange-50 p-2 rounded-lg mr-3"><i data-lucide="utensils" class="text-orange-500 w-4 h-4"></i></div>
-                            <div>
-                                <p class="font-bold text-sm text-gray-800">馬場洞韓牛</p>
-                                <p class="text-xs text-gray-400">2026-05-04</p>
-                            </div>
-                        </div>
-                        <p class="font-black text-blue-600">₩ 85,000</p>
-                    </div>
-                </div>
-                <button class="fixed bottom-24 right-6 bg-blue-600 text-white p-4 rounded-full shadow-2xl z-50">
-                    <i data-lucide="plus" class="w-6 h-6"></i>
-                </button>
-            </div>
-
-        </div>
-
-        <div class="fixed bottom-0 inset-x-0 bg-white/80 backdrop-blur-lg border-t border-gray-100 flex justify-around py-3 px-6 z-40">
-            <div v-for="tab in tabs" @click="currentTab = tab.id" 
-                class="flex flex-col items-center space-y-1"
-                :class="currentTab === tab.id ? 'text-blue-600' : 'text-gray-300'">
-                <i :data-lucide="tab.icon" class="w-6 h-6"></i>
-                <span class="text-[10px] font-bold">{{ tab.name }}</span>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const { createApp, ref, computed, onMounted } = Vue;
-
-        createApp({
-            setup() {
-                const currentTab = ref('itinerary');
-                const selectedDate = ref('2026-04-30');
-                const krw = ref(1000);
-
-                const tabs = [
-                    { id: 'itinerary', name: '行程表', icon: 'map-pin' },
-                    { id: 'info', name: '資訊', icon: 'info' },
-                    { id: 'shopping', name: '購物清單', icon: 'shopping-basket' },
-                    { id: 'expenses', name: '花費', icon: 'banknote' }
-                ];
-
-                const travelDates = [
-                    { day: '30', week: 'Thu', full: '2026-04-30' },
-                    { day: '01', week: 'Fri', full: '2026-05-01' },
-                    { day: '02', week: 'Sat', full: '2026-05-02' },
-                    { day: '03', week: 'Sun', full: '2026-05-03' },
-                    { day: '04', week: 'Mon', full: '2026-05-04' },
-                    { day: '05', week: 'Tue', full: '2026-05-05' }
-                ];
-
-                // 初始行程資訊
-                const allPlans = ref([
-                    { id: 1, date: '2026-04-30', type: '航班', depTime: '17:00', arrTime: '20:40', depAirport: 'TPE', arrAirport: 'ICN', flightNo: 'BR170' },
-                    { id: 2, date: '2026-04-30', type: '住宿', name: 'RM House Check-in', note: '弘大入口站附近', openTime: '15:00後' },
-                    { id: 3, date: '2026-05-01', type: '景點', name: 'T1 總部', note: 'T1 HQ 巡禮', openTime: '10:00 - 18:00' },
-                    { id: 4, date: '2026-05-01', type: '景點', name: '樂天世界', note: '蠶室遊樂園', openTime: '10:00 - 21:00' },
-                    { id: 5, date: '2026-05-02', type: '景點', name: '北村韓屋村', note: '韓服體驗', openTime: '24小時' },
-                    { id: 6, date: '2026-05-03', type: '景點', name: 'T1 Base Camp', note: '體驗 T1 網咖', openTime: '24小時' },
-                    { id: 7, date: '2026-05-04', type: '購物', name: '漢南洞&聖水洞', note: '購物商圈巡禮' }
-                ]);
-
-                const filteredPlans = computed(() => {
-                    return allPlans.value.filter(p => p.date === selectedDate.value);
-                });
-
-                const getTypeIcon = (type) => {
-                    const icons = { '景點': 'map', '住宿': 'home', '美食': 'utensils', '購物': 'shopping-cart', '航班': 'plane' };
-                    return icons[type] || 'calendar';
-                };
-
-                const goNav = (location) => {
-                    // 跳到Google map導航
-                    window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`, '_blank');
-                };
-
-                onMounted(() => {
-                    // 初始化 Lucide Icons
-                    lucide.createIcons();
-                    // 初始化拖拽上下移動排序
-                    const el = document.getElementById('sortable-list');
-                    if(el) {
-                        Sortable.create(el, { 
-                            animation: 150,
-                            onEnd: function (evt) {
-                                console.log('行程已排序，新增行程後將重新計算交通時間');
-                            }
-                        });
-                    }
-                });
-
-                return { currentTab, tabs, travelDates, selectedDate, allPlans, filteredPlans, getTypeIcon, krw, goNav };
-            }
-        }).mount('#app');
-    </script>
-</body>
-</html>
+                            <div class="flex justify
