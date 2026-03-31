@@ -10,31 +10,31 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
-        /* 日系極簡配色與字體設定 [cite: 12-17] */
+        /* 日系極簡配色與字體設計 [cite: 12-21] */
         body {
             font-family: 'Noto+Sans+TC', sans-serif;
             background-color: #f7f3e9; /* 延伸圖片底色 [cite: 15] */
-            color: #5d564a; [cite: 16]
+            color: #5d564a;
         }
-        .cream-bg { background-color: #fdfaf5; } [cite: 18]
-        .hide-scrollbar::-webkit-scrollbar { display: none; } [cite: 20]
-        .rounded-t-custom { border-top-left-radius: 30px; border-top-right-radius: 30px; } [cite: 21]
+        .cream-bg { background-color: #fdfaf5; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .rounded-t-custom { border-top-left-radius: 30px; border-top-right-radius: 30px; }
         
-        /* 頁首 Banner 容器設定 [cite: 23-32] */
+        /* 頁首 Banner 容器高度與圖片設定 [cite: 23-32] */
         .banner-container {
-            height: 250px; [cite: 24]
-            overflow: hidden; [cite: 25]
-            position: relative; [cite: 26]
+            height: 250px;
+            overflow: hidden;
+            position: relative;
         }
         .banner-img {
-            width: 100%; [cite: 29]
-            height: 100%; [cite: 30]
-            object-fit: cover; [cite: 31]
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
     </style>
 </head>
 <body>
-    <div id="app" class="max-w-md mx-auto min-h-screen relative pb-20"> [cite: 36]
+    <div id="app" class="max-w-md mx-auto min-h-screen relative pb-20">
         <header class="banner-container">
             <img src="https://i.imgur.com/your-image-link.jpg" alt="Banner" class="banner-img">
             <div class="absolute bottom-10 right-4 flex space-x-2">
@@ -46,29 +46,29 @@
             </div>
         </header>
 
-        <main class="relative -mt-8 cream-bg min-h-screen rounded-t-custom px-5 pt-8 shadow-2xl"> [cite: 47, 150]
-
+        <main class="relative -mt-8 cream-bg min-h-screen rounded-t-custom px-5 pt-8 shadow-2xl">
+            
             <section v-if="currentTab === 'itinerary'">
                 <div class="flex overflow-x-auto hide-scrollbar space-x-4 mb-6 pb-2">
                     <div v-for="day in schedule" :key="day.date" 
                         @click="selectedDate = day.date"
                         :class="['flex flex-col items-center min-w-[60px] p-2 rounded-2xl cursor-pointer transition', 
                         selectedDate === day.date ? 'bg-[#e9edc9] border-2 border-[#ccd5ae]' : 'bg-white shadow-sm']">
-                        <span class="text-xs font-bold uppercase">{{ day.weekday }}</span> [cite: 54]
-                        <span class="text-lg font-bold">{{ day.dayNum }}</span> [cite: 55]
+                        <span class="text-xs font-bold uppercase">{{ day.weekday }}</span>
+                        <span class="text-lg font-bold">{{ day.dayNum }}</span>
                     </div>
                 </div>
 
                 <div class="bg-white/50 rounded-2xl p-4 mb-6 flex items-center justify-between border border-[#e9edc9]">
                     <div class="flex items-center space-x-3">
-                        <i data-lucide="sun" class="text-orange-400 w-8 h-8"></i> [cite: 60]
+                        <i data-lucide="sun" class="text-orange-400 w-8 h-8"></i>
                         <div>
-                            <p class="text-sm font-medium">首爾, 南韓</p> [cite: 62]
-                            <p class="text-2xl font-bold">18°C</p> [cite: 63]
+                            <p class="text-sm font-medium">首爾, 南韓</p>
+                            <p class="text-2xl font-bold">18°C</p>
                         </div>
                     </div>
                     <div class="text-right text-xs text-gray-500">
-                        體感 16°C<br>晴時多雲 [cite: 67]
+                        體感 16°C<br>晴時多雲
                     </div>
                 </div>
 
@@ -77,174 +77,177 @@
                         <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-100 group" @click="openGoogleMap(item.address)">
                             <div class="flex justify-between items-start mb-2">
                                 <span class="bg-[#faedcd] text-[#d4a373] text-[10px] px-2 py-1 rounded-full font-bold">
-                                    {{ item.category }} [cite: 75]
+                                    {{ item.category }}
                                 </span>
-                                <i data-lucide="more-vertical" class="w-4 h-4 text-gray-300"></i> [cite: 77]
+                                <i data-lucide="more-vertical" class="w-4 h-4 text-gray-300"></i>
                             </div>
-                            <h3 class="font-bold text-lg mb-1">{{ item.name }}</h3> [cite: 79]
+                            <h3 class="font-bold text-lg mb-1">{{ item.name }}</h3>
                             <p class="text-xs text-gray-500 flex items-center mb-1">
-                                <i data-lucide="clock" class="w-3 h-3 mr-1"></i> {{ item.time }} [cite: 81]
+                                <i data-lucide="clock" class="w-3 h-3 mr-1"></i> {{ item.time }}
                             </p>
                             <p v-if="item.note" class="text-sm text-gray-600 bg-stone-50 p-2 rounded-lg mt-2 italic">
-                                "{{ item.note }}" [cite: 84]
+                                "{{ item.note }}"
                             </p>
                         </div>
                         
                         <div v-if="index < currentDayItems.length - 1" class="py-4 flex flex-col items-center">
                             <div class="border-l-2 border-dashed border-stone-300 h-4"></div>
                             <div class="flex items-center space-x-2 text-[10px] text-gray-400 py-1">
-                                <i data-lucide="bus" class="w-3 h-3"></i> [cite: 90]
-                                <span>大眾運輸 25 分鐘</span> [cite: 91]
+                                <i data-lucide="bus" class="w-3 h-3"></i>
+                                <span>大眾運輸 25 分鐘</span>
                             </div>
                             <div class="border-l-2 border-dashed border-stone-300 h-4"></div>
                         </div>
                     </div>
                 </div>
                 
-                <button class="fixed bottom-24 right-6 bg-[#d4a373] text-white p-4 rounded-full shadow-lg z-50">
-                    <i data-lucide="plus" class="w-6 h-6"></i> [cite: 98]
+                <button @click="showModal = true" class="fixed bottom-24 right-6 bg-[#d4a373] text-white p-4 rounded-full shadow-lg z-50 transition-transform active:scale-90">
+                    <i data-lucide="plus" class="w-6 h-6"></i>
                 </button>
             </section>
 
             <section v-if="currentTab === 'info'" class="space-y-6">
                 <div class="bg-white rounded-2xl p-5 shadow-sm">
                     <h3 class="font-bold flex items-center mb-4 text-[#d4a373]">
-                        <i data-lucide="repeat" class="mr-2"></i> 匯率換算 [cite: 104]
+                        <i data-lucide="repeat" class="mr-2"></i> 匯率換算
                     </h3>
                     <div class="space-y-3">
                         <div class="flex items-center bg-stone-50 p-3 rounded-xl">
-                            <span class="mr-3 font-bold">KRW</span> [cite: 108]
-                            <input v-model="krwInput" type="number" class="bg-transparent w-full outline-none" placeholder="輸入韓元"> [cite: 109]
+                            <span class="mr-3 font-bold">KRW</span>
+                            <input v-model="krwInput" type="number" class="bg-transparent w-full outline-none" placeholder="輸入韓元">
                         </div>
                         <div class="flex items-center bg-[#fefae0] p-3 rounded-xl border border-[#e9edc9]">
-                            <span class="mr-3 font-bold">TWD</span> [cite: 112]
-                            <span class="font-bold text-[#d4a373]">{{ (krwInput * 0.024).toFixed(0) }} 元</span> [cite: 113]
+                            <span class="mr-3 font-bold">TWD</span>
+                            <span class="font-bold text-[#d4a373]">{{ (krwInput * 0.024).toFixed(0) }} 元</span>
                         </div>
                     </div>
                 </div>
                 <div class="bg-white rounded-2xl p-5 shadow-sm">
-                    <h3 class="font-bold mb-3">住宿：RM House</h3> [cite: 118]
-                    <p class="text-sm text-gray-600 mb-2">地址：와우산ロ 167, 首爾, 04056</p> [cite: 119]
-                    <button @click="openGoogleMap('RM House Seoul')" class="w-full bg-[#e9edc9] py-2 rounded-xl text-sm font-medium">Google 地圖導航</button> [cite: 120]
+                    <h3 class="font-bold mb-3">住宿：RM House</h3>
+                    <p class="text-sm text-gray-600 mb-2">地址：와우산로 167, 首爾, 04056</p>
+                    <button @click="openGoogleMap('RM House Seoul')" class="w-full bg-[#e9edc9] py-2 rounded-xl text-sm font-medium">Google 地圖導航</button>
                 </div>
             </section>
 
             <section v-if="currentTab === 'shop'" class="grid grid-cols-2 gap-4">
                 <div v-for="item in shoppingList" :key="item.id" class="bg-white rounded-2xl overflow-hidden shadow-sm">
                     <div class="h-32 bg-stone-200">
-                        <img v-if="item.image" :src="item.image" class="w-full h-full object-cover"> [cite: 126]
+                        <img v-if="item.image" :src="item.image" class="w-full h-full object-cover">
                     </div>
-                    <div class="p-3 text-center font-medium">{{ item.name }}</div> [cite: 128]
+                    <div class="p-3 text-center font-medium">{{ item.name }}</div>
                 </div>
-                <button class="fixed bottom-24 right-6 bg-[#d4a373] text-white p-4 rounded-full shadow-lg">
-                    <i data-lucide="plus" class="w-6 h-6"></i> [cite: 131]
+                <button class="fixed bottom-24 right-6 bg-[#d4a373] text-white p-4 rounded-full shadow-lg z-50">
+                    <i data-lucide="plus" class="w-6 h-6"></i>
                 </button>
             </section>
 
             <section v-if="currentTab === 'cost'" class="space-y-4">
                 <div class="bg-[#d4a373] p-6 rounded-3xl text-white shadow-md mb-6">
-                    <p class="text-sm opacity-80">總花費預算 (KRW)</p> [cite: 136]
-                    <h2 class="text-3xl font-bold">₩ 1,250,000</h2> [cite: 137]
+                    <p class="text-sm opacity-80">總花費預算 (KRW)</p>
+                    <h2 class="text-3xl font-bold">₩ 1,250,000</h2>
                 </div>
                 <div v-for="cost in costs" :key="cost.id" class="bg-white p-4 rounded-2xl flex justify-between items-center shadow-sm">
                     <div class="flex items-center space-x-3">
-                        <div class="bg-stone-100 p-2 rounded-lg"><i data-lucide="utensils" class="w-4 h-4"></i></div> [cite: 141]
+                        <div class="bg-stone-100 p-2 rounded-lg"><i data-lucide="utensils" class="w-4 h-4"></i></div>
                         <div>
-                            <p class="font-bold">{{ cost.name }}</p> [cite: 143]
-                            <p class="text-[10px] text-gray-400">{{ cost.date }} | {{ cost.method }}</p> [cite: 144]
+                            <p class="font-bold">{{ cost.name }}</p>
+                            <p class="text-[10px] text-gray-400">{{ cost.date }} | {{ cost.method }}</p>
                         </div>
                     </div>
-                    <span class="font-bold text-red-400">₩ {{ cost.amount }}</span> [cite: 147]
+                    <span class="font-bold text-red-400">₩ {{ cost.amount }}</span>
                 </div>
-                <button class="fixed bottom-24 right-6 bg-[#d4a373] text-white p-4 rounded-full shadow-lg">
+                <button class="fixed bottom-24 right-6 bg-[#d4a373] text-white p-4 rounded-full shadow-lg z-50">
                     <i data-lucide="plus" class="w-6 h-6"></i>
                 </button>
             </section>
-
         </main>
 
         <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md h-16 flex items-center justify-around border-t border-stone-100 px-6 z-40">
             <div class="text-[10px] text-[#d4a373] flex flex-col items-center">
-                <i data-lucide="calendar-days" class="w-5 h-5 mb-1"></i> [cite: 153]
-                <span>我的行程</span> [cite: 154]
+                <i data-lucide="calendar-days" class="w-5 h-5 mb-1"></i>
+                <span>我的行程</span>
             </div>
             <div class="text-[10px] text-gray-400 flex flex-col items-center">
-                <i data-lucide="map-pin" class="w-5 h-5 mb-1"></i> [cite: 157]
-                <span>探索</span> [cite: 158]
+                <i data-lucide="map-pin" class="w-5 h-5 mb-1"></i>
+                <span>探索</span>
             </div>
             <div class="text-[10px] text-gray-400 flex flex-col items-center">
-                <i data-lucide="user" class="w-5 h-5 mb-1"></i> [cite: 161]
-                <span>個人中心</span> [cite: 162]
+                <i data-lucide="user" class="w-5 h-5 mb-1"></i>
+                <span>個人中心</span>
             </div>
         </nav>
     </div>
 
     <script>
-        const { createApp, ref, computed, onMounted } = Vue; [cite: 167]
+        const { createApp, ref, computed, onMounted } = Vue;
 
         createApp({
             setup() {
-                const currentTab = ref('itinerary'); [cite: 170]
-                const selectedDate = ref('4/30'); [cite: 171]
-                const krwInput = ref(50000); [cite: 172]
+                const currentTab = ref('itinerary');
+                const selectedDate = ref('4/30');
+                const krwInput = ref(50000);
+                const showModal = ref(false); // 控制新增彈窗狀態 [cite: 97]
                 
-                const tabs = [ [cite: 173]
-                    { id: 'itinerary', icon: 'map' }, [cite: 174]
-                    { id: 'info', icon: 'info' }, [cite: 175]
-                    { id: 'shop', icon: 'shopping-basket' }, [cite: 176]
-                    { id: 'cost', icon: 'banknote' } [cite: 177]
+                const tabs = [
+                    { id: 'itinerary', icon: 'map' },
+                    { id: 'info', icon: 'info' },
+                    { id: 'shop', icon: 'shopping-basket' },
+                    { id: 'cost', icon: 'banknote' }
                 ];
 
-                const schedule = ref([ [cite: 179]
-                    { date: '4/30', dayNum: '30', weekday: 'Thu' }, [cite: 180]
-                    { date: '5/1', dayNum: '1', weekday: 'Fri' }, [cite: 181]
-                    { date: '5/2', dayNum: '2', weekday: 'Sat' }, [cite: 182]
-                    { date: '5/3', dayNum: '3', weekday: 'Sun' }, [cite: 183]
-                    { date: '5/4', dayNum: '4', weekday: 'Mon' }, [cite: 184]
-                    { date: '5/5', dayNum: '5', weekday: 'Tue' }, [cite: 185]
+                const schedule = ref([
+                    { date: '4/30', dayNum: '30', weekday: 'Thu' },
+                    { date: '5/1', dayNum: '1', weekday: 'Fri' },
+                    { date: '5/2', dayNum: '2', weekday: 'Sat' },
+                    { date: '5/3', dayNum: '3', weekday: 'Sun' },
+                    { date: '5/4', dayNum: '4', weekday: 'Mon' },
+                    { date: '5/5', dayNum: '5', weekday: 'Tue' },
                 ]);
 
-                const itineraryItems = ref([ [cite: 187]
-                    { id: 1, date: '4/30', category: '航班', name: '桃園 T2 → 仁川 T2', time: '17:00-20:40', note: '搭乘大韓航空', address: 'Incheon International Airport Terminal 2' }, [cite: 188]
-                    { id: 2, date: '5/1', category: '景點', name: 'T1 總部', time: '10:00-12:00', note: '朝聖 Faker!', address: 'T1 Base Camp Seoul' }, [cite: 189]
-                    { id: 3, date: '5/1', category: '景點', name: '樂天世界', time: '13:00-18:00', note: '門票已購', address: 'Lotte World Seoul' }, [cite: 190]
+                const itineraryItems = ref([
+                    { id: 1, date: '4/30', category: '航班', name: '桃園 T2 → 仁川 T2', time: '17:00-20:40', note: '搭乘大韓航空', address: 'Incheon International Airport Terminal 2' },
+                    { id: 2, date: '5/1', category: '景點', name: 'T1 總部', time: '10:00-12:00', note: '朝聖 Faker!', address: 'T1 Base Camp Seoul' },
+                    { id: 3, date: '5/1', category: '景點', name: '樂天世界', time: '13:00-18:00', note: '門票已購', address: 'Lotte World Seoul' },
                 ]);
 
-                const shoppingList = ref([ [cite: 192]
-                    { id: 1, name: 'Tamburins 香水', image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=200' }, [cite: 193]
-                    { id: 2, name: 'T1 隊服', image: '' } [cite: 194]
+                const shoppingList = ref([
+                    { id: 1, name: 'Tamburins 香水', image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=200' },
+                    { id: 2, name: 'T1 隊服', image: '' }
                 ]);
 
-                const costs = ref([ [cite: 196]
-                    { id: 1, name: '校村炸雞', date: '5/1', amount: '22000', method: '信用卡' }, [cite: 197]
-                    { id: 2, name: '地鐵儲值', date: '5/1', amount: '10000', method: '現金' } [cite: 198]
+                const costs = ref([
+                    { id: 1, name: '校村炸雞', date: '5/1', amount: '22000', method: '信用卡' },
+                    { id: 2, name: '地鐵儲值', date: '5/1', amount: '10000', method: '現金' }
                 ]);
 
-                const currentDayItems = computed(() => { [cite: 200]
-                    return itineraryItems.value.filter(item => item.date === selectedDate.value); [cite: 201]
+                const currentDayItems = computed(() => {
+                    return itineraryItems.value.filter(item => item.date === selectedDate.value);
                 });
 
-                const openGoogleMap = (query) => { [cite: 203]
-                    window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`, '_blank'); [cite: 204]
+                // Google Map 導航連結整合 [cite: 203-205]
+                const openGoogleMap = (query) => {
+                    window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`, '_blank');
                 };
 
-                onMounted(() => { [cite: 206]
-                    lucide.createIcons(); [cite: 207]
-                    const el = document.getElementById('itinerary-list'); [cite: 209]
-                    if(el) { [cite: 210]
-                        new Sortable(el, { [cite: 211]
-                            animation: 150, [cite: 212]
-                            ghostClass: 'bg-stone-100' [cite: 213]
+                onMounted(() => {
+                    lucide.createIcons();
+                    // 初始化 SortableJS 拖曳排序功能 [cite: 208-215]
+                    const el = document.getElementById('itinerary-list');
+                    if(el) {
+                        new Sortable(el, {
+                            animation: 150,
+                            ghostClass: 'bg-stone-100',
+                            handle: '.bg-white' // 設定可抓取的區域
                         });
                     }
                 });
 
-                return { [cite: 217]
+                return {
                     currentTab, tabs, schedule, selectedDate, itineraryItems, 
-                    currentDayItems, openGoogleMap, krwInput, shoppingList, costs [cite: 218-219]
+                    currentDayItems, openGoogleMap, krwInput, shoppingList, costs, showModal
                 };
             }
-        }).mount('#app'); [cite: 222]
+        }).mount('#app');
     </script>
 </body>
 </html>
