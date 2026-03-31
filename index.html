@@ -8,21 +8,27 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #f7f3ee; font-family: 'PingFang TC', sans-serif; }
+        /* 整體設計:『日系極簡風』與『北海道冰雪風格』 */
+        body { background-color: #FDFCFB; font-family: 'Noto Sans TC', sans-serif; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .glass-nav { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); }
-        .header-curve { border-radius: 40px 40px 0 0; margin-top: -40px; position: relative; z-index: 10; background: #fdfcfb; }
+        /* 圓弧銜接設計 */
+        .header-curve { border-radius: 40px 40px 0 0; margin-top: -40px; position: relative; z-index: 10; background: #FDFCFB; }
         .date-card.active { background-color: #3b82f6; color: white; transform: scale(1.05); }
         .item-card { transition: transform 0.2s; }
         .item-card:active { transform: scale(0.98); }
-        .blue-gradient { background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); }
+        /* 北海道冰雪配色 */
+        .snow-gradient { background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%); }
+        .card-shadow { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
     </style>
 </head>
 <body>
     <div id="app" class="max-w-md mx-auto min-h-screen shadow-2xl relative pb-20">
+        
         <div class="h-[250px] w-full relative overflow-hidden">
-            <img src="https://googleusercontent.com/image_generation_content/1" class="w-full h-full object-cover" alt="Olaf Banner">
+            <img src="https://googleusercontent.com/image_generation_content/1" alt="Olaf Banner" class="w-full h-full object-cover">
             
             <div class="absolute bottom-12 right-4 flex space-x-2 z-20">
                 <button v-for="tab in tabs" :key="tab.id" @click="currentTab = tab.id" 
@@ -36,7 +42,8 @@
         <div class="header-curve px-4 pt-8 pb-10 min-h-screen">
             
             <div v-if="currentTab === 'itinerary'">
-                <div class="blue-gradient rounded-2xl p-4 mb-6 flex items-center justify-between border border-blue-100 shadow-sm">
+                
+                <div class="snow-gradient rounded-2xl p-4 mb-6 flex items-center justify-between border border-blue-100 card-shadow">
                     <div class="flex items-center">
                         <i data-lucide="cloud-snow" class="text-blue-500 mr-3"></i>
                         <div>
@@ -59,12 +66,12 @@
                 <div id="sortable-list" class="space-y-6">
                     <div v-for="(plan, index) in filteredPlans" :key="plan.id" class="relative group">
                         
-                        <div v-if="plan.type === '航班'" class="bg-blue-600 text-white rounded-3xl p-6 shadow-xl relative overflow-hidden">
-                            <div class="flex justify-between items-center mb-4">
+                        <div v-if="plan.type === '航班'" class="bg-blue-600 text-white rounded-3xl p-6 card-shadow relative overflow-hidden">
+                            <div class="flex justify-between items-center mb-4 relative z-10">
                                 <span class="bg-white/20 px-3 py-1 rounded-full text-xs font-bold">{{ plan.flightNo }}</span>
                                 <i data-lucide="plane" class="w-5 h-5 rotate-90"></i>
                             </div>
-                            <div class="flex justify-between items-end">
+                            <div class="flex justify-between items-end relative z-10">
                                 <div>
                                     <p class="text-3xl font-black leading-none">{{ plan.depTime }}</p>
                                     <p class="text-sm opacity-80 mt-1">{{ plan.depAirport }}</p>
@@ -106,10 +113,10 @@
             <div v-if="currentTab === 'info'" class="space-y-6">
                 <h2 class="text-2xl font-black text-blue-900 mb-6">旅遊資訊</h2>
                 
-                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+                <div class="bg-white p-6 rounded-3xl card-shadow border border-gray-100">
                     <div class="flex items-center mb-4">
                         <i data-lucide="arrow-left-right" class="text-blue-500 mr-2"></i>
-                        <span class="font-bold">今日匯率換算 (KRW ➔ TWD)</span>
+                        <span class="font-bold text-gray-800">匯率換算 (KRW ➔ TWD)</span>
                     </div>
                     <div class="flex items-center space-x-4">
                         <input v-model="krw" type="number" class="w-full bg-blue-50 p-4 rounded-2xl font-bold text-blue-900 outline-none" placeholder="輸入韓元">
@@ -120,13 +127,26 @@
                     </div>
                 </div>
 
-                <div @click="goNav('RM House')" class="bg-blue-50 p-6 rounded-3xl border border-blue-100">
-                    <p class="text-xs font-bold text-blue-400 uppercase tracking-widest mb-1">Accommodation</p>
-                    <h3 class="text-xl font-black text-blue-900">RM House</h3>
-                    <p class="text-sm text-blue-600/70 mt-2 leading-relaxed">와우산로 167, 首爾, 首爾 04056, 南韓</p>
-                    <div class="mt-4 flex space-x-2">
-                        <span class="bg-white px-3 py-1 rounded-full text-xs text-blue-600 font-bold shadow-sm">📍 開啟地圖</span>
-                        <span class="bg-white px-3 py-1 rounded-full text-xs text-blue-600 font-bold shadow-sm">📞 聯絡房東</span>
+                <div @click="goNav('RM House Seoul')" class="bg-blue-50 p-6 rounded-3xl border border-blue-100 flex items-start space-x-4">
+                    <div class="bg-white p-3 rounded-xl shadow-sm"><i data-lucide="home" class="text-blue-500 w-6 h-6"></i></div>
+                    <div class="flex-1">
+                        <p class="text-xs font-bold text-blue-400 uppercase tracking-widest mb-1">Accommodation</p>
+                        <h3 class="text-xl font-black text-blue-900">RM House</h3>
+                        <p class="text-sm text-blue-600/70 mt-2 leading-relaxed">와우산로 167, 首爾, 首爾 04056, 南韓</p>
+                        <div class="mt-4 flex space-x-2">
+                            <span class="bg-white px-3 py-1 rounded-full text-xs text-blue-600 font-bold shadow-sm">📞 聯絡房東</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-2xl border border-gray-100 flex items-center space-x-3">
+                        <i data-lucide="car" class="text-blue-500 w-5 h-5"></i>
+                        <span class="text-sm font-bold text-gray-800">租車資訊</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl border border-gray-100 flex items-center space-x-3">
+                        <i data-lucide="phone" class="text-blue-500 w-5 h-5"></i>
+                        <span class="text-sm font-bold text-gray-800">緊急醫療</span>
                     </div>
                 </div>
             </div>
@@ -142,7 +162,7 @@
                     </div>
                 </div>
                 <button class="fixed bottom-24 right-6 bg-blue-600 text-white p-4 rounded-full shadow-2xl z-50">
-                    <i data-lucide="shopping-basket" class="w-6 h-6"></i>
+                    <i data-lucide="plus" class="w-6 h-6"></i>
                 </button>
             </div>
 
@@ -163,6 +183,9 @@
                         <p class="font-black text-blue-600">₩ 85,000</p>
                     </div>
                 </div>
+                <button class="fixed bottom-24 right-6 bg-blue-600 text-white p-4 rounded-full shadow-2xl z-50">
+                    <i data-lucide="plus" class="w-6 h-6"></i>
+                </button>
             </div>
 
         </div>
@@ -178,7 +201,7 @@
     </div>
 
     <script>
-        const { createApp, ref, computed, onMounted, nextTick } = Vue;
+        const { createApp, ref, computed, onMounted } = Vue;
 
         createApp({
             setup() {
@@ -188,8 +211,8 @@
 
                 const tabs = [
                     { id: 'itinerary', name: '行程表', icon: 'map-pin' },
-                    { id: 'info', name: '旅遊資訊', icon: 'info' },
-                    { id: 'shopping', name: '清單', icon: 'shopping-bag' },
+                    { id: 'info', name: '資訊', icon: 'info' },
+                    { id: 'shopping', name: '購物清單', icon: 'shopping-basket' },
                     { id: 'expenses', name: '花費', icon: 'banknote' }
                 ];
 
@@ -202,13 +225,15 @@
                     { day: '05', week: 'Tue', full: '2026-05-05' }
                 ];
 
+                // 初始行程資訊
                 const allPlans = ref([
                     { id: 1, date: '2026-04-30', type: '航班', depTime: '17:00', arrTime: '20:40', depAirport: 'TPE', arrAirport: 'ICN', flightNo: 'BR170' },
                     { id: 2, date: '2026-04-30', type: '住宿', name: 'RM House Check-in', note: '弘大入口站附近', openTime: '15:00後' },
                     { id: 3, date: '2026-05-01', type: '景點', name: 'T1 總部', note: 'T1 HQ 巡禮', openTime: '10:00 - 18:00' },
-                    { id: 4, date: '2026-05-01', type: '景點', name: '樂天世界', note: '首爾最具代表性遊樂園', openTime: '10:00 - 21:00' },
+                    { id: 4, date: '2026-05-01', type: '景點', name: '樂天世界', note: '蠶室遊樂園', openTime: '10:00 - 21:00' },
                     { id: 5, date: '2026-05-02', type: '景點', name: '北村韓屋村', note: '韓服體驗', openTime: '24小時' },
-                    { id: 6, date: '2026-05-03', type: '景點', name: 'T1 Base Camp', note: '體驗 T1 網咖', openTime: '24小時' }
+                    { id: 6, date: '2026-05-03', type: '景點', name: 'T1 Base Camp', note: '體驗 T1 網咖', openTime: '24小時' },
+                    { id: 7, date: '2026-05-04', type: '購物', name: '漢南洞&聖水洞', note: '購物商圈巡禮' }
                 ]);
 
                 const filteredPlans = computed(() => {
@@ -221,15 +246,22 @@
                 };
 
                 const goNav = (location) => {
+                    // 跳到Google map導航
                     window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`, '_blank');
                 };
 
                 onMounted(() => {
+                    // 初始化 Lucide Icons
                     lucide.createIcons();
-                    // 初始化拖拽
+                    // 初始化拖拽上下移動排序
                     const el = document.getElementById('sortable-list');
                     if(el) {
-                        Sortable.create(el, { animation: 150 });
+                        Sortable.create(el, { 
+                            animation: 150,
+                            onEnd: function (evt) {
+                                console.log('行程已排序，新增行程後將重新計算交通時間');
+                            }
+                        });
                     }
                 });
 
